@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>amCharts examples</title>
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <script src="js/jQuery-1.11.2.js" type="text/javascript"></script>
+        <script src="js/amcharts.js" type="text/javascript"></script>
+        <script src="js/serial.js" type="text/javascript"></script>
+        <script>
+            var chart;
+
+            var chartData = [
+                {
+                    "country": 2005,
+                    "litres": 23.5
+                },
+                {
+                    "country": 2006,
+                    "litres": 26.2
+                },
+                {
+                    "country": 2007,
+                    "litres": 30.1
+                },
+                {
+                    "country": 2008,
+                    "litres": 29.5
+                },
+                {
+                    "country": 2009,
+                    "litres": 24.6
+                }
+            ];
+
+ 				var dataW = [];
+           
+              $.each(JSON.parse(AndroidFunction.bar()), function(idx, v) {
+ 				//document.getElementById("mytext").innerHTML += obj.country+ "<br>";
+ 				dataW.push({country :v.country , litres : v.litres});
+				});
+          
+           
+        
+        
+            AmCharts.ready(function () {
+                // SERIAL CHART
+                chart = new AmCharts.AmSerialChart();
+                chart.dataProvider = dataW;
+                chart.categoryField = "country";
+                // this single line makes the chart a bar chart,
+                // try to set it to false - your bars will turn to columns
+                chart.rotate = true;
+                // the following two lines makes chart 3D
+                chart.depth3D = 20;
+                chart.angle = 30;
+                chart.fontSize = 30;
+
+                // AXES
+                // Category
+                var categoryAxis = chart.categoryAxis;
+                categoryAxis.gridPosition = "start";
+                categoryAxis.axisColor = "#DADADA";
+                categoryAxis.fillAlpha = 1;
+                categoryAxis.gridAlpha = 0;
+                categoryAxis.fillColor = "#FAFAFA";
+
+                // value
+                var valueAxis = new AmCharts.ValueAxis();
+                valueAxis.axisColor = "#DADADA";
+                valueAxis.title = "Income in millions, USD";
+                valueAxis.gridAlpha = 0.1;
+                chart.addValueAxis(valueAxis);
+
+                // GRAPH
+                var graph = new AmCharts.AmGraph();
+                graph.title = "Income";
+                graph.valueField = "litres";
+                graph.type = "column";
+                graph.balloonText = "Income in [[category]]:[[value]]";
+                graph.lineAlpha = 0;
+                graph.fillColors = "#bf1c25";
+                graph.fillAlphas = 1;
+                chart.addGraph(graph);
+
+                chart.creditsPosition = "top-right";
+
+                // WRITE
+                chart.write("chartdiv");
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="chartdiv" style="width: 500px; height: 600px;"></div>
+    </body>
+
+</html>
